@@ -5,6 +5,8 @@ import com.idp.backend.dto.ServiceCatResponse;
 import com.idp.backend.service.ServiceCatService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,16 @@ public class ServiceCatController {
     public ResponseEntity<?> getAll(){
             List<ServiceCatResponse> services= service.getAll();
             return ResponseEntity.ok(services);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Page<ServiceCatResponse>> list(
+            @RequestParam(required = false) String runtime,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String ownerTeam,
+            Pageable pageable
+    ){
+        return ResponseEntity.ok(service.listServices(runtime, status, ownerTeam, pageable));
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id){

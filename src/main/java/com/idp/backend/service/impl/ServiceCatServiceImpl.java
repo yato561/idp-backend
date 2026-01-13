@@ -6,7 +6,12 @@ import com.idp.backend.dto.ServiceCatResponse;
 import com.idp.backend.entity.ServiceCatInfo;
 import com.idp.backend.mapper.ServiceCatMapper;
 import com.idp.backend.service.ServiceCatService;
+import com.idp.backend.util.PaginationUtil;
+import com.idp.backend.util.ServiceSpec;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,4 +63,16 @@ public class ServiceCatServiceImpl implements ServiceCatService {
         entity.setStatus("DEPRECATED");
         serviceDao.save(entity);//soft-delete
     }
+
+    @Override
+    public Page<ServiceCatResponse> listServices(String runtime, String status, String ownerTeam, Pageable pageable) {
+        Specification<ServiceCatInfo> spec=
+                Specification.where(ServiceSpec.hasRuntime(runtime))
+                        .and(ServiceSpec.hasStatus(status))
+                        .and(ServiceSpec.hasOwnerTeam(ownerTeam));
+
+        Page<ServiceCatInfo> page= serviceDao.findAll(spec,pageable);
+        return page.map(ServiceCatMapper::toResponse);
+    }
+
 }
