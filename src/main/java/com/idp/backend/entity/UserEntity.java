@@ -30,4 +30,6 @@ public class UserEntity {
     @CollectionTable(name = "user_roles")
     @Column(name="role")
     private Set<String> roles;
+
+    private String team;
 }

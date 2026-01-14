@@ -7,6 +7,7 @@ import com.idp.backend.entity.ServiceCatInfo;
 import com.idp.backend.mapper.ServiceCatMapper;
 import com.idp.backend.service.ServiceCatService;
 import com.idp.backend.util.PaginationUtil;
+import com.idp.backend.util.SecurityUtil;
 import com.idp.backend.util.ServiceSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,9 +69,15 @@ public class ServiceCatServiceImpl implements ServiceCatService {
     public Page<ServiceCatResponse> listServices(String runtime, String status, String ownerTeam, Pageable pageable) {
         Specification<ServiceCatInfo> spec=
                 Specification.where(ServiceSpec.hasRuntime(runtime))
-                        .and(ServiceSpec.hasStatus(status))
-                        .and(ServiceSpec.hasOwnerTeam(ownerTeam));
-
+                        .and(ServiceSpec.hasStatus(status));
+//                       .and(ServiceSpec.hasOwnerTeam(ownerTeam));
+        if(!SecurityUtil.hasRole("ADMIN")){
+            spec=spec.and(
+                    ServiceSpec.hasOwnerTeam(
+                            SecurityUtil.currentUsername()
+                    )
+            );
+        }
         Page<ServiceCatInfo> page= serviceDao.findAll(spec,pageable);
         return page.map(ServiceCatMapper::toResponse);
     }
