@@ -1,29 +1,34 @@
 package com.idp.backend.service.impl;
 
-import com.idp.backend.dao.ServiceCatDao;
-import com.idp.backend.dto.ServiceCatRequest;
-import com.idp.backend.dto.ServiceCatResponse;
-import com.idp.backend.entity.ServiceCatInfo;
-import com.idp.backend.mapper.ServiceCatMapper;
-import com.idp.backend.service.ServiceCatService;
-import com.idp.backend.util.PaginationUtil;
-import com.idp.backend.util.SecurityUtil;
-import com.idp.backend.util.ServiceSpec;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import com.idp.backend.dao.ServiceCatDao;
+import com.idp.backend.dto.ServiceCatRequest;
+import com.idp.backend.dto.ServiceCatResponse;
+import com.idp.backend.entity.ServiceCatInfo;
+import com.idp.backend.mapper.ServiceCatMapper;
+import com.idp.backend.service.ServiceCatService;
+import com.idp.backend.util.SecurityUtil;
+import com.idp.backend.util.ServiceSpec;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ServiceCatServiceImpl implements ServiceCatService {
 
     @Autowired
     private ServiceCatDao serviceDao;
+
+    @Autowired
+    private SecurityUtil securityUtil;
 
     @Override
     public ServiceCatResponse create(ServiceCatRequest request) {
@@ -67,15 +72,29 @@ public class ServiceCatServiceImpl implements ServiceCatService {
 
     @Override
     public Page<ServiceCatResponse> listServices(String runtime, String status, String ownerTeam, Pageable pageable) {
+        log.info(
+                "RBAC DEBUG → user={}, roleAdmin={}, enforcedTeam={}",
+                securityUtil.currentUsername(),
+                securityUtil.hasRole("ADMIN"),
+                securityUtil.currentUserTeam()
+        );
+
+
         Specification<ServiceCatInfo> spec=
                 Specification.where(ServiceSpec.hasRuntime(runtime))
                         .and(ServiceSpec.hasStatus(status));
 //                       .and(ServiceSpec.hasOwnerTeam(ownerTeam));
-        if(!SecurityUtil.hasRole("ADMIN")){
+        boolean isAdmin = securityUtil.isAdmin();
+        if(!isAdmin){
+            // enforce filter by the user's team, not username
             spec=spec.and(
-                    ServiceSpec.hasOwnerTeam(
-                            SecurityUtil.currentUsername()
-                    )
+                ServiceSpec.hasOwnerTeam(
+                    securityUtil.currentUserTeam()
+                )
+            );
+        } else if (ownerTeam!=null) {
+            spec = spec.and(
+                    ServiceSpec.hasOwnerTeam(ownerTeam)
             );
         }
         Page<ServiceCatInfo> page= serviceDao.findAll(spec,pageable);

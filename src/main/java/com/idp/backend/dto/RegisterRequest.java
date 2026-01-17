@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +18,10 @@ public class RegisterRequest {
 
     @JsonProperty("password")
     private String password;
+
+    @JsonProperty("roles")
+    private Set<String> roles;
+
+    @JsonProperty("team")
+    private String team;
 }

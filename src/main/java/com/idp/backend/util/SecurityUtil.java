@@ -4,19 +4,21 @@ import com.idp.backend.dao.UserDao;
 import com.idp.backend.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
-public final class SecurityUtil {
+@Component
+public  class SecurityUtil {
 
     @Autowired
     private UserDao userDao;
     private SecurityUtil(){}
 
-    public static String currentUsername(){
+    public  String currentUsername(){
         return SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
     }
-    public static boolean hasRole(String role){
+    public  boolean hasRole(String role){
         return SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getAuthorities()
@@ -29,6 +31,14 @@ public final class SecurityUtil {
         if (user.getTeam() == null) {
             throw new IllegalStateException("User has no team assigned");
         }
-        return user.getTeam();
+        return user.getTeam().trim().toLowerCase();
     }
+    public static boolean isAdmin() {
+        return SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
+
 }

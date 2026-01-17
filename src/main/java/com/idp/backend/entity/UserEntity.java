@@ -31,5 +31,6 @@ public class UserEntity {
     @Column(name="role")
     private Set<String> roles;
 
+    @Column(nullable = false)
     private String team;
 }
