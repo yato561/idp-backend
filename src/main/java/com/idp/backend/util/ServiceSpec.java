@@ -10,7 +10,7 @@ public class ServiceSpec {
             if (runtime == null || runtime.isBlank()) {
                 return cb.conjunction(); // ALWAYS TRUE
             }
-            return cb.equal(root.get("runtime"), runtime);
+            return cb.equal(root.get("runTime"), runtime);
         };
     }
 

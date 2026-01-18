@@ -2,6 +2,8 @@ package com.idp.backend.service.impl;
 
 import java.util.Set;
 
+import com.idp.backend.entity.ServiceCatInfo;
+import com.idp.backend.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -84,5 +86,21 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(LogoutRequest request) {
         refreshTokenService.revoke(request.getRefreshToken());
+    }
+
+    public void assertCanUpdate(ServiceCatInfo serviceCatInfo){
+        if (SecurityUtil.isAdmin()) return;
+
+        if(!serviceCatInfo.getOwnerTeam().equalsIgnoreCase(
+                SecurityUtil.currentUserTeam()
+        )){
+            throw  new SecurityException("Not allowed to update this service");
+        }
+    }
+
+    public void assertCanDelete(ServiceCatInfo serviceCatInfo){
+        if (!SecurityUtil.isAdmin()){
+            throw new SecurityException("Only Admin can delete services");
+        }
     }
 }

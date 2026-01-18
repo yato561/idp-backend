@@ -1,31 +1,41 @@
 package com.idp.backend.util;
 
 import com.idp.backend.dao.UserDao;
+import com.idp.backend.entity.ServiceCatInfo;
 import com.idp.backend.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public  class SecurityUtil {
 
-    @Autowired
-    private UserDao userDao;
     private SecurityUtil(){}
 
-    public  String currentUsername(){
-        return SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
+
+    private static UserDao userDao;
+
+    public static void init(UserDao dao){
+        userDao= dao;
     }
-    public  boolean hasRole(String role){
-        return SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getAuthorities()
+    public static String currentUsername(){
+        Authentication auth= SecurityContextHolder.getContext()
+                .getAuthentication();
+        return auth!=null ? auth.getName() : null;
+    }
+    public static boolean hasRole(String role){
+        Authentication auth=SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth == null) return false;
+        return auth.getAuthorities()
                 .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_"+role));
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(a -> a.equals("ROLE_"+role));
     }
-    public String currentUserTeam(){
+    public static String currentUserTeam(){
         String username=currentUsername();
         UserEntity user= userDao.findByUsername(username);
         if (user.getTeam() == null) {
@@ -34,11 +44,24 @@ public  class SecurityUtil {
         return user.getTeam().trim().toLowerCase();
     }
     public static boolean isAdmin() {
-        return SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getAuthorities()
+        Authentication auth =  SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth == null) return false;
+        return auth.getAuthorities()
                 .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(a -> a.equals("ROLE_ADMIN"));
+    }
+    public static Specification<ServiceCatInfo> hasRuntime(String runtime) {
+        return (root, query, cb) -> {
+            if (runtime == null || runtime.isBlank()) {
+                return cb.conjunction();
+            }
+            return cb.equal(
+                    cb.lower(cb.trim(root.get("runTime"))),
+                    runtime.toLowerCase()
+            );
+        };
     }
 
 }

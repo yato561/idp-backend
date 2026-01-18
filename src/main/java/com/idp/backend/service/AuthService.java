@@ -5,6 +5,7 @@ import com.idp.backend.dto.LoginRequest;
 import com.idp.backend.dto.LogoutRequest;
 import com.idp.backend.dto.RefreshRequest;
 import com.idp.backend.dto.RegisterRequest;
+import com.idp.backend.entity.ServiceCatInfo;
 
 public interface AuthService {
 
@@ -15,4 +16,8 @@ public interface AuthService {
     AuthResponse refresh(RefreshRequest request);
 
     void logout(LogoutRequest request);
+
+    void assertCanUpdate(ServiceCatInfo serviceCatInfo);
+
+    void assertCanDelete(ServiceCatInfo serviceCatInfo);
 }
