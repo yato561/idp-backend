@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,13 +51,13 @@ public class ServiceCatController {
     public ResponseEntity<?> update(
             @PathVariable UUID id,
             @RequestBody ServiceCatRequest request
-    ){
+    ) throws AccessDeniedException {
             ServiceCatResponse response = service.update(id, request);
             return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable UUID id) throws AccessDeniedException {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

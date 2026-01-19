@@ -30,4 +30,21 @@ public class ServiceCatMapper {
         response.setCreatedAt(entity.getCreatedAt());
         return response;
     }
+
+    public static void updateEntity(ServiceCatInfo entity, ServiceCatRequest request){
+
+        if (request.getServiceName()!=null){
+            entity.setServiceName(request.getServiceName());
+        }
+
+        if(request.getRepoUrl()!=null){
+            entity.setRepoUrl(request.getRepoUrl());
+        }
+        if(request.getRunTime()!=null){
+            entity.setRunTime(request.getRunTime());
+        }
+        if (request.getStatus()!=null){
+            entity.setStatus(request.getStatus());
+        }
+    }
 }

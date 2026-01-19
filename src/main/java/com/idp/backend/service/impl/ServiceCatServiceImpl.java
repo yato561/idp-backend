@@ -1,15 +1,17 @@
 package com.idp.backend.service.impl;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.UUID;
 
+import com.idp.backend.audit.Auditable;
+import com.idp.backend.security.OwnershipGuard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.idp.backend.audit.Auditable;
 import com.idp.backend.dao.ServiceCatDao;
 import com.idp.backend.dto.ServiceCatRequest;
 import com.idp.backend.dto.ServiceCatResponse;
@@ -31,6 +33,10 @@ public class ServiceCatServiceImpl implements ServiceCatService {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private OwnershipGuard ownershipGuard;
+
 
     @Override
     public ServiceCatResponse create(ServiceCatRequest request) {
@@ -56,13 +62,29 @@ public class ServiceCatServiceImpl implements ServiceCatService {
         return ServiceCatMapper.toResponse(serviceDao.findById(id));
     }
 
+//    @Override
+//    public ServiceCatResponse update(UUID id, ServiceCatRequest request) {
+//        ServiceCatInfo entity= serviceDao.findById(id);
+//        entity.setRepoUrl(request.getRepoUrl());
+//        entity.setOwnerTeam(request.getOwnerTeam());
+//        entity.setRunTime(request.getRunTime());
+//        return ServiceCatMapper.toResponse(serviceDao.save(entity));
+//    }
     @Override
-    public ServiceCatResponse update(UUID id, ServiceCatRequest request) {
-        ServiceCatInfo entity= serviceDao.findById(id);
-        entity.setRepoUrl(request.getRepoUrl());
-        entity.setOwnerTeam(request.getOwnerTeam());
-        entity.setRunTime(request.getRunTime());
-        return ServiceCatMapper.toResponse(serviceDao.save(entity));
+    @Auditable(
+            action = "UPDATE_SERVICE",
+            resource = "SERVICE",
+            resourceIdParam = "id"
+    )
+    public ServiceCatResponse update(UUID id, ServiceCatRequest request) throws AccessDeniedException {
+        ServiceCatInfo serviceCatInfo= serviceDao.findById(id);
+
+        ownershipGuard.assertCanModify(serviceCatInfo);
+
+        ServiceCatMapper.updateEntity(serviceCatInfo,request);
+        ServiceCatInfo saved= serviceDao.save(serviceCatInfo);
+
+        return ServiceCatMapper.toResponse(saved);
     }
 
 //    @Override
@@ -112,11 +134,26 @@ public class ServiceCatServiceImpl implements ServiceCatService {
         return serviceDao.findAll(spec,pageable)
                 .map(ServiceCatMapper::toResponse);
     }
+//    @Override
+//    @Auditable(action = "DELETE_SERVICE", resource = "SERVICE")
+//    public void delete(UUID id){
+//        ServiceCatInfo serviceCatInfo= serviceDao.findById(id);
+//        authService.assertCanDelete(serviceCatInfo);
+//        serviceDao.delete(serviceCatInfo);
+//    }
+
     @Override
-    @Auditable(action = "DELETE_SERVICE", resource = "SERVICE")
-    public void delete(UUID id){
+    @Auditable(
+            action = "DELETE_SERVICE",
+            resource = "SERVICE",
+            resourceIdParam = "id"
+    )
+    public void delete(UUID id) throws AccessDeniedException {
+
         ServiceCatInfo serviceCatInfo= serviceDao.findById(id);
-        authService.assertCanDelete(serviceCatInfo);
+
+        ownershipGuard.assertCanModify(serviceCatInfo);
+
         serviceDao.delete(serviceCatInfo);
     }
 }

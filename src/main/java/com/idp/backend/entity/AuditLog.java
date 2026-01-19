@@ -27,5 +27,7 @@ public class AuditLog {
     private String resource;
     private String resourceId;
 
-    private Instant timestamp = Instant.now();
+    private String outcome;
+    private String error;
+    private Instant timestamp;
 }

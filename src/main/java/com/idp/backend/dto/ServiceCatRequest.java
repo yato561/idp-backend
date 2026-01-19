@@ -18,6 +18,8 @@ public class ServiceCatRequest {
     private String repoUrl;
     @JsonProperty("ownerTeam")
     private String ownerTeam;
-    @JsonProperty("runtime")
+    @JsonProperty("runTime")
     private String runTime;
+    @JsonProperty("status")
+    private String status;
 }
