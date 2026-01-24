@@ -47,6 +47,8 @@ public class ServiceDaoImpl implements ServiceCatDao {
     }
 
     @Override
+    public ServiceCatInfo findByName(String name){ return repo.findByServiceName(name);}
+    @Override
     public Page<ServiceCatInfo> findAll(Specification<ServiceCatInfo> spec, Pageable pageable) {
         return PaginationUtil.paginate(repo,spec,pageable);
     }

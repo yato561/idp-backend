@@ -20,6 +20,8 @@ public interface ServiceCatDao {
 
     boolean existsByName(String name);
 
+    ServiceCatInfo findByName(String name);
+
     Page<ServiceCatInfo> findAll(Specification<ServiceCatInfo> spec, Pageable pageable);
 
 }
