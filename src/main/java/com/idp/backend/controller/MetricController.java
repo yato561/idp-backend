@@ -4,6 +4,7 @@ package com.idp.backend.controller;
 import com.idp.backend.dto.HealthResponse;
 import com.idp.backend.dto.MetricRequest;
 import com.idp.backend.dto.MetricResponse;
+import com.idp.backend.dto.SummaryResponse;
 import com.idp.backend.service.MetricService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @RestController
@@ -50,5 +52,12 @@ public class MetricController {
     @GetMapping("/{serviceId}")
     public ResponseEntity<Page<MetricResponse>> history(@PathVariable UUID serviceId, Pageable page){
         return ResponseEntity.ok(service.history(serviceId,page));
+    }
+
+    @GetMapping("/{serviceId}/summary")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VIEWER')")
+    public ResponseEntity<SummaryResponse> summarize(@PathVariable UUID serviceId, @RequestParam(required = false) Integer window,
+                                                     @RequestParam(required = false)Instant from, @RequestParam(required = false) Instant to){
+            return ResponseEntity.ok(service.getSummaryById(serviceId, window, from, to));
     }
 }
