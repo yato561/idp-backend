@@ -60,14 +60,14 @@ public class AuditAspect {
         }
         return null;
     }
-    @AfterReturning("@annotation(auditable)")
-    public void log(JoinPoint jp, Auditable auditable){
-
-        AuditLog log= new AuditLog();
-        log.setActor(SecurityUtil.currentUsername());
-        log.setAction(auditable.action());
-        log.setResource(auditable.resource());
-
-        repo.save(log);
-    }
+//    @AfterReturning("@annotation(auditable)")
+//    public void log(JoinPoint jp, Auditable auditable){
+//
+//        AuditLog log= new AuditLog();
+//        log.setActor(SecurityUtil.currentUsername());
+//        log.setAction(auditable.action());
+//        log.setResource(auditable.resource());
+//
+//        repo.save(log);
+//    }
 }

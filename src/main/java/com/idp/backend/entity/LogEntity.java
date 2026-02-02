@@ -12,8 +12,14 @@ import java.util.UUID;
 @Entity
 @Table(name = "service_logs",
         indexes = {
-                @Index(name = "idx_logs_service_time", columnList = "serviceId,timestamp"),
-                @Index(name = "idx_logs_trace", columnList = "traceId")
+                @Index(
+                        name = "idx_logs_service_time",
+                        columnList = "service_id, time_stamp"
+                ),
+                @Index(
+                        name = "idx_logs_trace",
+                        columnList = "trace_id"
+                )
         })
 @Data
 @AllArgsConstructor

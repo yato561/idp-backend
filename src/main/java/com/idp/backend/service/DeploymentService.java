@@ -1,7 +1,9 @@
 package com.idp.backend.service;
 
+import com.idp.backend.dto.DeploySummaryResponse;
 import com.idp.backend.dto.DeploymentRequest;
 import com.idp.backend.dto.DeploymentResponse;
+import com.idp.backend.dto.RollbackRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,5 +14,9 @@ public interface DeploymentService {
 
     Page<DeploymentResponse> history(UUID serviceId, Pageable page);
 
-    DeploymentResponse latest(UUID serviceId);
+    DeploymentResponse latest(UUID serviceId, String env);
+
+    DeploySummaryResponse getSummary(UUID serviceId);
+
+    void rollback(RollbackRequest request);
  }

@@ -30,6 +30,7 @@ public class DeploymentEntity {
     @Column(nullable = false)
     private String env;
 
+
     @Column(nullable = false)
     private String status;
 

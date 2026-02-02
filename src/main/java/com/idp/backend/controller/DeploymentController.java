@@ -1,7 +1,9 @@
 package com.idp.backend.controller;
 
+import com.idp.backend.dto.DeploySummaryResponse;
 import com.idp.backend.dto.DeploymentRequest;
 import com.idp.backend.dto.DeploymentResponse;
+import com.idp.backend.dto.RollbackRequest;
 import com.idp.backend.service.DeploymentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,21 @@ public class DeploymentController {
 
     @GetMapping("/{serviceId}/latest")
     @PreAuthorize("hasAnyRole('ADMIN','VIEWER')")
-    public ResponseEntity<DeploymentResponse> latest(@PathVariable UUID serviceId) {
-        return ResponseEntity.ok(service.latest(serviceId));
+    public ResponseEntity<DeploymentResponse> latest(@PathVariable UUID serviceId, @RequestParam(required = false) String env) {
+        return ResponseEntity.ok(service.latest(serviceId,env));
+    }
+
+    @GetMapping("/{serviceId}/summary")
+    @PreAuthorize("hasAnyRole('ADMIN','VIEWER')")
+    public ResponseEntity<DeploySummaryResponse> summary(@PathVariable UUID serviceId){
+        return ResponseEntity.ok(service.getSummary(serviceId));
+    }
+
+    @PostMapping("/rollback")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> rollback(@Valid @RequestBody RollbackRequest request){
+        service.rollback(request);
+        return ResponseEntity.accepted().build();
     }
 }
 

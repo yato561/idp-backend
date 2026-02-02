@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 @Component
 public class DeploymentDaoImpl implements DeploymentDao {
@@ -24,8 +25,20 @@ public class DeploymentDaoImpl implements DeploymentDao {
         return repo.findByServiceId(serviceId, page);
     }
 
+
     @Override
     public DeploymentEntity latest(UUID serviceId) {
         return repo.findTopByServiceIdOrderByDeployedAtDesc(serviceId);
     }
+
+    @Override
+    public DeploymentEntity latestByEnv(UUID serviceId, String env) {
+        return repo.findTopByServiceIdAndEnvOrderByDeployedAtDesc(serviceId, env);
+    }
+
+    @Override
+    public List<DeploymentEntity> findAllByService(UUID serviceId) {
+        return repo.findByServiceIdOrderByDeployedAtDesc(serviceId);
+    }
+
 }
