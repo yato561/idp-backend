@@ -1,26 +1,22 @@
-package com.idp.backend.rateLimit;
-
-import java.time.Duration;
-import java.time.Instant;
+package com.idp.backend.ratelimit;
 
 public class TokenBucket {
 
     private int tokens;
     private final int capacity;
-    private final int refillRate;
-    private Instant lastRefill;
+    private final int refillRate; // tokens per second
+    private long lastRefillMillis;
 
     public TokenBucket(int capacity, int refillRate){
         this.capacity = capacity;
         this.refillRate = refillRate;
         this.tokens = capacity;
-        this.lastRefill= Instant.now();
-
+        this.lastRefillMillis = System.currentTimeMillis();
     }
 
     synchronized boolean tryConsume(){
         refill();
-        if(tokens >0){
+        if(tokens > 0){
             tokens--;
             return true;
         }
@@ -28,12 +24,15 @@ public class TokenBucket {
     }
 
     private void refill(){
-        Instant now= Instant.now();
-        long seconds= Duration.between(lastRefill,now).getSeconds();
-        if(seconds >0){
-            int refill = (int) (seconds* refillRate);
-            tokens = Math.min(capacity, tokens + refill);
-            lastRefill = now;
+        long now = System.currentTimeMillis();
+        long elapsedMillis = now - lastRefillMillis;
+        if(elapsedMillis <= 0 || refillRate <= 0) return;
+
+        long refillTokens = (elapsedMillis * (long) refillRate) / 1000L;
+        if(refillTokens > 0){
+            tokens = Math.min(capacity, (int) (tokens + refillTokens));
+            long consumedMillis = (refillTokens * 1000L) / (long) refillRate;
+            lastRefillMillis += consumedMillis;
         }
     }
 }

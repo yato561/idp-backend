@@ -1,6 +1,5 @@
 package com.idp.backend.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -16,15 +15,19 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.servlet.http.HttpServletResponse;
+import com.idp.backend.ratelimit.RateLimitFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
+    private final RateLimitFilter rateLimitFilter;
+
+    public SecurityConfig(JwtFilter jwtFilter, RateLimitFilter rateLimitFilter) {
+        this.jwtFilter = jwtFilter;
+        this.rateLimitFilter = rateLimitFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -32,9 +35,10 @@ public class SecurityConfig {
     }
 
     @Bean
+    @SuppressWarnings("java:S1130") // Exception thrown is part of Spring Security API contract
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config
-    ) throws Exception{
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 
@@ -68,7 +72,8 @@ public class SecurityConfig {
                 )
                 .httpBasic(basic -> basic.disable())
                 .formLogin(form -> form.disable())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(rateLimitFilter, JwtFilter.class);
 
         return http.build();
     }

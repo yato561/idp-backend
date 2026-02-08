@@ -1,22 +1,20 @@
-package com.idp.backend.rateLimit;
-
-
-import org.springframework.stereotype.Component;
+package com.idp.backend.ratelimit;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+
+import org.springframework.stereotype.Component;
+
 
 @Component
 public class RateLimitRegistry {
 
     private final Map<String, TokenBucket> bucket = new ConcurrentHashMap<>();
 
-    public TokenBucket getBucket(String key){
-
+    public TokenBucket getBucket(String key, int capacity, int refillRate){
         return bucket.computeIfAbsent(
-                key,
-                k -> new TokenBucket(20, 5)
+            key,
+            k -> new TokenBucket(capacity, refillRate)
         );
     }
 }
