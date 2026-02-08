@@ -1,0 +1,39 @@
+{
+  "id": "rate-limit-env",
+  "name": "Rate Limit Testing Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "enabled": true
+    },
+    {
+      "key": "admin_token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIn0.test_token_replace_with_real",
+      "enabled": true
+    },
+    {
+      "key": "service_id",
+      "value": "service-001",
+      "enabled": true
+    },
+    {
+      "key": "viewer_token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWV3ZXIiLCJyb2xlIjoiUk9MRV9WSUVXRVIifQ.test_token_replace_with_real",
+      "enabled": true
+    },
+    {
+      "key": "request_count",
+      "value": "0",
+      "enabled": true
+    },
+    {
+      "key": "timestamp",
+      "value": "{{$timestamp}}",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2026-02-08T00:00:00.000Z",
+  "_postman_exported_using": "Postman/11.0.0"
+}
