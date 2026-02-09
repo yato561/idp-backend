@@ -1,6 +1,7 @@
 package com.idp.backend.ratelimit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
@@ -10,19 +11,16 @@ import org.springframework.stereotype.Component;
 public class RateLimitConfig {
 
     @Bean
-    public Map<String, RateLimitRule> rateLimitRules(){
+    public List<RateLimitRule> rateLimitRules(){
+        return List.of(
+                new RateLimitRule("/api/admin", 100,50),
 
-        Map<String, RateLimitRule> rules = new HashMap<>();
+                new RateLimitRule("/api/metrics/ingest",20,5),
 
-        rules.put("ADMIN:POST:/api/deployments", new RateLimitRule(100,10));
+                new RateLimitRule("/api/logs/ingest",30,10),
 
-        rules.put("ADMIN:POST:/api/logs/ingest", new RateLimitRule(200,20));
-
-        rules.put("SERVICE:POST:/api/metrics/ingest", new RateLimitRule(60, 5));
-
-        rules.put("SERVICE:POST:/api/alerts/evaluate", new RateLimitRule(30,2));
-
-        return rules;
+                new RateLimitRule("/api",60,20)
+        );
     }
 
 }

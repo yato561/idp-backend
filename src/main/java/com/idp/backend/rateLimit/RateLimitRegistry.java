@@ -11,10 +11,10 @@ public class RateLimitRegistry {
 
     private final Map<String, TokenBucket> bucket = new ConcurrentHashMap<>();
 
-    public TokenBucket getBucket(String key, int capacity, int refillRate){
+    public TokenBucket resolveBucket(String key,RateLimitRule rule){
         return bucket.computeIfAbsent(
             key,
-            k -> new TokenBucket(capacity, refillRate)
+            k -> new TokenBucket(rule.capacity(), rule.refillRatePerSecond())
         );
     }
 }

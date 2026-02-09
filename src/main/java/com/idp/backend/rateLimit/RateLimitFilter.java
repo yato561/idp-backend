@@ -1,6 +1,7 @@
 package com.idp.backend.ratelimit;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -17,9 +18,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class RateLimitFilter extends OncePerRequestFilter {
 
     private final RateLimitRegistry registry;
-    private final Map<String, RateLimitRule> rules;
+    private final List<RateLimitRule> rules;
 
-    public RateLimitFilter(RateLimitRegistry registry, Map<String, RateLimitRule> rules) {
+    public RateLimitFilter(RateLimitRegistry registry, List<RateLimitRule> rules) {
         this.registry = registry;
         this.rules = rules;
     }
@@ -31,41 +32,27 @@ public class RateLimitFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws IOException, ServletException{
 
-
-        if(!"POST".equalsIgnoreCase(req.getMethod())){
-            chain.doFilter(req,res);
-            return;
-        }
-
         String path = req.getRequestURI();
 
-        String identifier = resolveKey(req);
+        RateLimitRule rule= rules.stream()
+                .filter(r -> path.startsWith(r.pathPrefix()))
+                .findFirst()
+                .orElse(null);
+        if (rule != null && SecurityUtil.isAuthenticated()){
 
-        String role;
-        if (req.getHeader("X-Service-Id") != null) {
-            role = "SERVICE";
-        } else if (SecurityUtil.isAdmin()) {
-            role = "ADMIN";
-        } else {
-            role = "VIEWER";
-        }
+            String username = SecurityUtil.currentUsername();
+            String role=SecurityUtil.isAdmin()?"ADMIN" : "VIEWER";
 
-        String ruleKey = role + ":" + req.getMethod().toUpperCase() + ":" + path;
-        RateLimitRule rule = rules.get(ruleKey);
+            String bucketKey= role + ":" +username+":"+rule.pathPrefix();
 
-        if (rule == null) {
-            chain.doFilter(req, res);
-            return;
-        }
+            TokenBucket bucket= registry.resolveBucket(bucketKey, rule);
 
-        String bucketKey = ruleKey + ":" + identifier;
-        TokenBucket bucket = registry.getBucket(bucketKey, rule.capacity(), rule.refillRatePerSecond());
+            if(!bucket.tryConsume()){
+                res.setStatus(429);
+                res.getWriter().write("Rate limit exceeded");
+                return;
+            }
 
-        if (!bucket.tryConsume()) {
-            res.setStatus(429);
-            res.setContentType("text/plain");
-            res.getWriter().write("Rate limit exceeded");
-            return;
         }
 
         chain.doFilter(req, res);
