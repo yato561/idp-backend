@@ -168,7 +168,7 @@ public class MetricServiceImpl implements MetricService {
             java.util.List<ServiceCatInfo> allServices = serviceDao.findAll();
             
             for (ServiceCatInfo service : allServices) {
-                syncFromPrometheus(service.getId(), service.getServiceName());
+                syncFromPrometheus(service.getServiceId(), service.getServiceName());
             }
             
             log.info("Completed bulk pull of metrics from Prometheus");
