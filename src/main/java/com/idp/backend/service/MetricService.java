@@ -18,5 +18,15 @@ public interface MetricService {
     Page<MetricResponse> history(UUID serviceId, Pageable page);
     HealthResponse getHealth(UUID serviceId);
     SummaryResponse getSummaryById(UUID serviceId, Integer window, Instant from, Instant to);
-
+    void ingestInternal(MetricRequest request);
+    
+    /**
+     * Sync metrics from Prometheus for a specific service
+     */
+    void syncFromPrometheus(UUID serviceId, String serviceName);
+    
+    /**
+     * Pull all metrics from Prometheus for all services
+     */
+    void pullAllMetricsFromPrometheus();
 }

@@ -14,6 +14,8 @@ import com.idp.backend.entity.UserEntity;
 import com.idp.backend.exception.TokenException;
 import com.idp.backend.service.RefreshTokenService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
@@ -37,20 +39,22 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken verify(String token) {
-
-        RefreshToken refreshToken=refreshTokenDao.findByToken(token);
-
-        if (refreshToken == null) {
+        RefreshToken refreshToken;
+        
+        try {
+            refreshToken = refreshTokenDao.findByToken(token);
+        } catch (EntityNotFoundException e) {
             throw new TokenException("Refresh token not found");
         }
 
-        if (refreshToken.isRevoked()){
+        if (refreshToken.isRevoked()) {
             throw new TokenException("Refresh token revoked");
         }
 
-        if(refreshToken.getExpiryDate().isBefore(Instant.now())){
+        if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
             throw new TokenException("Refresh token expired");
         }
+        
         return refreshToken;
     }
 

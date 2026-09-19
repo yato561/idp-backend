@@ -1,23 +1,31 @@
 package com.idp.backend.service.impl;
 
-import com.idp.backend.dao.MetricsDao;
-import com.idp.backend.dao.ServiceCatDao;
-import com.idp.backend.dto.*;
-import com.idp.backend.entity.MetricEntity;
-import com.idp.backend.entity.ServiceCatInfo;
-import com.idp.backend.mapper.MetricMapper;
-import com.idp.backend.service.MetricService;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
+import com.idp.backend.dao.MetricsDao;
+import com.idp.backend.dao.ServiceCatDao;
+import com.idp.backend.dto.HealthResponse;
+import com.idp.backend.dto.MetricRequest;
+import com.idp.backend.dto.MetricResponse;
+import com.idp.backend.dto.SummaryProjection;
+import com.idp.backend.dto.SummaryResponse;
+import com.idp.backend.entity.MetricEntity;
+import com.idp.backend.entity.ServiceCatInfo;
+import com.idp.backend.mapper.MetricMapper;
+import com.idp.backend.service.MetricService;
+import com.idp.backend.util.PrometheusClient;
+import com.idp.backend.util.async.AsyncIngestor;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -29,13 +37,20 @@ public class MetricServiceImpl implements MetricService {
     @Autowired
     public ServiceCatDao serviceDao;
 
+    @Autowired
+    public PrometheusClient prometheusClient;
+
     @Value("${health.threshold.seconds:120}")
     private long thresholdSeconds;
 
+    private final AsyncIngestor<MetricRequest> asyncIngestor;
+    public MetricServiceImpl(AsyncIngestor<MetricRequest> asyncIngestor){
+        this.asyncIngestor = asyncIngestor;
+    }
     @Override
     public void ingest(UUID serviceId, MetricRequest request) {
-        ServiceCatInfo service= serviceDao.findById(serviceId);
-        metricsDao.save(MetricMapper.toEntity(request,service));
+        request.setServiceId(serviceId);
+        asyncIngestor.submit(request);
     }
 
     @Override
@@ -113,5 +128,53 @@ public class MetricServiceImpl implements MetricService {
         return SummaryResponse.from(p, status, window);
     }
 
+    @Override
+    public void ingestInternal(MetricRequest request) {
+        ServiceCatInfo service = serviceDao.findById(request.getServiceId());
+        metricsDao.save(MetricMapper.toEntity(request, service));
+    }
+
+    @Override
+    public void syncFromPrometheus(UUID serviceId, String serviceName) {
+        try {
+            log.info("Syncing metrics from Prometheus for service: {} ({})", serviceId, serviceName);
+            
+            Double cpuUsage = prometheusClient.getCpuUsage(serviceName);
+            Long memoryUsage = prometheusClient.getMemoryUsage(serviceName);
+            Boolean isUp = prometheusClient.isServiceUp(serviceName);
+            
+            if (cpuUsage != null || memoryUsage != null) {
+                MetricRequest request = new MetricRequest();
+                request.setServiceId(serviceId);
+                request.setCpuUsage(cpuUsage);
+                request.setMemoryUsageMb(memoryUsage);
+                
+                ingestInternal(request);
+                log.info("Successfully synced metrics from Prometheus for service: {}", serviceId);
+            } else {
+                log.warn("No metrics found in Prometheus for service: {}", serviceName);
+            }
+        } catch (Exception e) {
+            log.error("Error syncing metrics from Prometheus for service: {}", serviceId, e);
+        }
+    }
+
+    @Override
+    public void pullAllMetricsFromPrometheus() {
+        try {
+            log.info("Starting bulk pull of all metrics from Prometheus");
+            
+            // Get all services
+            java.util.List<ServiceCatInfo> allServices = serviceDao.findAll();
+            
+            for (ServiceCatInfo service : allServices) {
+                syncFromPrometheus(service.getId(), service.getServiceName());
+            }
+            
+            log.info("Completed bulk pull of metrics from Prometheus");
+        } catch (Exception e) {
+            log.error("Error pulling all metrics from Prometheus", e);
+        }
+    }
 
 }

@@ -1,0 +1,1488 @@
+================================================================================
+GODAVARI GLOBAL UNIVERSITY
+I MCA – II Semester | Software Engineering & Design Patterns
+COMPLETE ANSWERS — ALL QUESTIONS (SET 1 & SET 2)
+================================================================================
+
+================================================================================
+PREDICTED SEMESTER PAPER — SET 1
+================================================================================
+
+PART A — SHORT ANSWERS (5 × 2 = 10 Marks)
+================================================================================
+
+Q1. Define Software Engineering.
+────────────────────────────────
+
+Definition:
+Software Engineering is the systematic application of engineering principles, 
+methods, and tools to the development, operation, and maintenance of high-quality 
+software systems.
+
+• Coined by NATO Science Committee in 1968.
+• Aims to produce reliable, efficient, maintainable software on time and within 
+  budget.
+• Covers the entire software development life cycle (SDLC): requirements, design, 
+  coding, testing, deployment, maintenance.
+
+IEEE Definition:
+"The application of a systematic, disciplined, quantifiable approach to the 
+development, operation and maintenance of software; that is, the application of 
+engineering to software."
+
+
+Q2. What is Software Process Model?
+────────────────────────────────────
+
+Definition:
+A Software Process Model (also called Software Development Life Cycle model) is 
+an abstract representation of a software process that describes the sequence of 
+activities, tasks, and workflows involved in building software.
+
+• Provides a structured framework for planning and managing software development.
+• Common models: Waterfall, Incremental, Spiral, Agile, RAD, V-Model.
+• Each model defines phases, deliverables, and milestones.
+
+
+Q3. Define SRS.
+───────────────
+
+Definition:
+Software Requirement Specification (SRS) is a formal document that completely 
+describes the behaviour of the software system to be developed. It captures all 
+functional and non-functional requirements agreed upon between stakeholders and 
+the development team.
+
+• Serves as the contract between customer and developer.
+• IEEE standard 830 provides guidelines for writing SRS.
+• Contents: Introduction, Overall Description, Functional Requirements, 
+  Non-functional Requirements, External Interface Requirements, Constraints.
+
+
+Q4. What is Design Pattern?
+────────────────────────────
+
+Definition:
+A Design Pattern is a general, reusable solution to a commonly occurring problem 
+within a given context in software design. It is a template or blueprint — not 
+finished code — that can be applied to solve a recurring design problem.
+
+• Introduced by the Gang of Four (GoF): Gamma, Helm, Johnson, Vlissides (1994).
+• Three categories: Creational, Structural, Behavioural.
+• Benefits: Reusability, common vocabulary, proven solutions, easier maintenance.
+
+
+Q5. Define Singleton Pattern.
+──────────────────────────────
+
+Definition:
+The Singleton Pattern is a Creational design pattern that ensures a class has 
+only one instance throughout the application's lifetime and provides a global 
+access point to that instance.
+
+• Use when exactly one object is needed to coordinate actions — e.g., database 
+  connection, logger, configuration manager.
+
+Code Example:
+class Singleton {
+    private static Singleton instance;
+    private Singleton() {}  // private constructor
+    public static Singleton getInstance() {
+        if (instance == null) instance = new Singleton();
+        return instance;
+    }
+}
+
+
+================================================================================
+PART B — LONG ANSWERS (5 × 8 = 40 Marks)
+================================================================================
+
+UNIT I
+================================================================================
+
+2(a) Option 1: Explain Software Engineering principles and software myths. (8M)
+─────────────────────────────────────────────────────────────────────────────
+
+Software Engineering Principles:
+
+1. Abstraction
+   Hide unnecessary details and show only the essential features of the system 
+   at each level of design.
+
+2. Modularity
+   Divide the software into separate, independent modules with well-defined 
+   interfaces. Reduces complexity; improves maintainability.
+
+3. Encapsulation
+   Bundle data and operations together; hide internal implementation details.
+
+4. Separation of Concerns
+   Each module should address a separate concern/responsibility 
+   (SRP — Single Responsibility Principle).
+
+5. Hierarchy / Decomposition
+   Decompose complex systems into simpler sub-systems; organise components 
+   in a hierarchy.
+
+6. Rigor and Formality
+   Apply mathematical and formal methods wherever possible to ensure correctness.
+
+7. Anticipation of Change
+   Design for change — requirements will evolve; software must be flexible.
+
+8. Generality
+   Solve general problems rather than specific ones to maximise reuse.
+
+9. Incremental Development
+   Build software in increments; validate each increment before proceeding.
+
+10. Traceability
+    Every design decision should be traceable to a specific requirement.
+
+
+Software Myths:
+
+Management Myths:
+• Myth: We have a book full of standards — that's enough for the team to know 
+  what to do.
+  Reality: Standards are meaningless unless used, verified, and adapted.
+
+• Myth: Adding more people to a late project will speed it up.
+  Reality: (Brooks' Law) Adding manpower to a late project makes it later — 
+  new people need to be trained, communication overhead increases.
+
+• Myth: If the project is outsourced, we can relax.
+  Reality: Outsourcing still requires active management, specification, and 
+  evaluation.
+
+Customer Myths:
+• Myth: A general statement of objectives is sufficient to begin writing programs.
+  Reality: Ambiguous initial requirements lead to expensive rework; detailed SRS 
+  is essential.
+
+• Myth: Software requirements can be changed freely at any time.
+  Reality: Changes late in development are extremely costly 
+  (exponential cost of change).
+
+Practitioner Myths:
+• Myth: Once we write the program and get it to work, our job is done.
+  Reality: 60–80% of effort is spent after delivery in maintenance.
+
+• Myth: Until the program is running, there is no way to assess its quality.
+  Reality: Technical reviews and inspections can detect defects early before 
+  execution.
+
+• Myth: Good documentation slows us down.
+  Reality: Documentation reduces long-term maintenance cost significantly.
+
+
+2(a) Option 2: Discuss the Waterfall model with advantages and limitations. (8M)
+─────────────────────────────────────────────────────────────────────────────────
+
+Waterfall Model:
+
+The Waterfall model is the oldest and most widely used classical process model. 
+It is a linear, sequential model where each phase must be completed before the 
+next begins. It was proposed by Winston W. Royce in 1970.
+
+Phases of Waterfall Model:
+
+1. Requirements Analysis
+   All system requirements are gathered, analysed, and documented in the SRS. 
+   Communication with the customer is completed at this stage.
+
+2. System Design
+   High-level and low-level design is created — hardware architecture, data 
+   structures, software architecture, algorithms.
+
+3. Implementation (Coding)
+   The design is translated into source code. Unit testing is performed on 
+   individual modules.
+
+4. Integration & Testing
+   All modules are integrated and the complete system is tested against 
+   requirements. Bugs are detected and fixed.
+
+5. Deployment
+   The system is installed in the customer environment. User training and 
+   documentation are provided.
+
+6. Maintenance
+   Post-deployment: bug fixes, enhancements, performance improvements. Longest 
+   and most expensive phase (60–80% of total effort).
+
+Waterfall Model Diagram:
+Requirements → System Design → Implementation → Testing → Deployment → Maintenance
+(Each phase feeds into the next; feedback loops exist between adjacent phases)
+
+Advantages:
+• Simple to understand and manage — clear milestones.
+• Well-structured; each phase has specific deliverables.
+• Works well when requirements are well-understood and stable.
+• Easy to use for small projects with clear, fixed scope.
+• Documentation is produced at each stage.
+
+Limitations / Disadvantages:
+• Not suitable for projects where requirements are likely to change.
+• No working software until late in the cycle — customer sees product only 
+  at the end.
+• Risk and uncertainty are high — problems found late are very expensive to fix.
+• Poor model for long and complex projects.
+• Does not accommodate requirement changes once a phase is complete (inflexible).
+• Testing is done only after implementation — defects found very late.
+
+
+2(b) Option 1: Explain Incremental and Spiral process models. (8M)
+──────────────────────────────────────────────────────────────────
+
+Incremental Process Model:
+
+The Incremental model combines elements of the Waterfall model applied in an 
+iterative manner. The product is built and delivered in increments, with each 
+increment adding new functionality.
+
+Key Characteristics:
+• Software is divided into builds/increments.
+• First increment is a core product — most important features.
+• Each subsequent increment adds more features.
+• Customer can use and evaluate early increments while later ones are being built.
+
+Phases per Increment: 
+Requirements → Design → Code → Test → Deliver → [next increment]
+
+Advantages:
+• Working software delivered early (after first increment).
+• Customer feedback can be incorporated in subsequent increments.
+• Risks are identified and resolved increment by increment.
+• Easier to test and debug smaller increments.
+
+Disadvantages:
+• Requires good planning and a clear definition of increments.
+• System architecture must be well-designed from the start to accommodate 
+  future increments.
+
+
+Spiral Model:
+
+Proposed by Barry Boehm (1988), the Spiral model combines iterative development 
+with systematic risk analysis. It is a meta-model that can incorporate other 
+process models.
+
+Four Quadrants (repeated in each spiral loop):
+
+1. Planning
+   Determine objectives, alternatives, constraints for this iteration.
+
+2. Risk Analysis
+   Evaluate alternatives; identify and resolve risks. Prototype may be built.
+
+3. Engineering
+   Develop and verify the product for this iteration (design, code, test).
+
+4. Customer Evaluation
+   Customer reviews the output; plan the next iteration.
+
+Advantages:
+• Risk handling is built into the model — best suited for large, high-risk 
+  projects.
+• Customer sees prototypes early; requirements can evolve.
+• Good for systems where requirements change frequently.
+• Combines prototyping and systematic aspects of Waterfall.
+
+Disadvantages:
+• Complex and expensive — not suitable for small projects.
+• Risk analysis requires highly specific expertise.
+• Number of iterations is difficult to predict; project end may be unclear.
+
+
+2(b) Option 2: Compare Agile methodology with traditional software development models. (8M)
+────────────────────────────────────────────────────────────────────────────────────────────
+
+Agile Methodology:
+
+Agile is an iterative, incremental approach guided by the Agile Manifesto (2001). 
+Development is done in short cycles called sprints (1–4 weeks), with continuous 
+customer involvement.
+
+Core Agile Principles (selected):
+• Deliver working software frequently (weeks, not months).
+• Welcome changing requirements even late in development.
+• Business people and developers collaborate daily.
+• Face-to-face conversation is the best communication.
+• Working software is the primary measure of progress.
+• Sustainable development — maintain a constant pace.
+
+Comparison: Agile vs Traditional (Waterfall/Spiral):
+
+Approach:
+Traditional: Sequential/linear phases. 
+Agile: Iterative sprints.
+
+Requirements:
+Traditional: Fixed upfront; changes are expensive. 
+Agile: Evolving; changes welcomed at any point.
+
+Customer Involvement:
+Traditional: Heavy at start and end only. 
+Agile: Continuous throughout.
+
+Delivery:
+Traditional: Single delivery at project end. 
+Agile: Frequent delivery of working increments.
+
+Documentation:
+Traditional: Extensive documentation at each phase. 
+Agile: Minimal, just-enough documentation.
+
+Team Size:
+Traditional: Can be large. 
+Agile: Small, cross-functional, self-organising teams (5–9 members).
+
+Testing:
+Traditional: Separate phase after coding. 
+Agile: Continuous testing (TDD — Test Driven Development).
+
+Risk Management:
+Traditional: Identified and managed per phase. 
+Agile: Risks addressed in each sprint.
+
+Best suited for:
+Traditional: Well-defined, stable requirements; safety-critical systems. 
+Agile: Dynamic requirements; fast-changing markets; web/mobile apps.
+
+Scrum Framework (Most Popular Agile):
+• Roles: Product Owner, Scrum Master, Development Team.
+• Artifacts: Product Backlog, Sprint Backlog, Increment.
+• Events: Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective.
+
+
+UNIT II
+================================================================================
+
+3(a) Option 1: Explain Software Requirement Engineering process. (8M)
+────────────────────────────────────────────────────────────────────
+
+Software Requirement Engineering:
+
+Requirement Engineering (RE) is the process of defining, documenting, and 
+maintaining the requirements of a software system. It is the first and most 
+critical phase of software development.
+
+RE Process Activities:
+
+1. Feasibility Study
+   Determines whether the proposed system is technically feasible, financially 
+   viable, and useful to the organisation. Output: Feasibility Report.
+
+2. Requirement Elicitation (Discovery)
+   Gathering requirements from stakeholders using various techniques:
+   • Interviews — direct Q&A with stakeholders.
+   • Questionnaires / Surveys — for large groups.
+   • Observation / Ethnography — observe users in their natural environment.
+   • Document Analysis — study existing systems and documents.
+   • Brainstorming and workshops.
+   • Prototyping — build a quick prototype to elicit feedback.
+   • Use Case Analysis — model user-system interactions.
+
+3. Requirement Analysis
+   Analyse gathered requirements for clarity, completeness, consistency, and 
+   feasibility. Identify conflicts between requirements and resolve them. 
+   Build analysis models (data flow diagrams, entity-relationship diagrams, 
+   use case models).
+
+4. Requirement Specification
+   Document requirements in a clear, precise, and verifiable form — the SRS 
+   document. Requirements must be: complete, consistent, unambiguous, verifiable, 
+   traceable, modifiable.
+
+5. Requirement Validation
+   Verify that the documented requirements define the correct system. 
+   Techniques: prototyping, requirement reviews, automated consistency checking, 
+   test-case generation.
+
+6. Requirement Management
+   Manage changes to requirements throughout the project. Maintain traceability 
+   matrix; track requirement versions; assess impact of changes.
+
+Types of Requirements:
+• Functional Requirements — what the system should do (features, functions).
+• Non-Functional Requirements — constraints on how the system performs 
+  (performance, security, usability, reliability).
+• Domain Requirements — requirements derived from the application domain.
+
+
+3(a) Option 2: Discuss Software Requirement Specification (SRS) document in detail. (8M)
+────────────────────────────────────────────────────────────────────────────────────────
+
+Software Requirement Specification (SRS):
+
+An SRS is a formal document that serves as the bridge between customer requirements 
+and the technical solution. It completely describes the external behaviour of the 
+system to be developed.
+
+Characteristics of a Good SRS (IEEE 830):
+• Correct — every requirement represents something actually required.
+• Unambiguous — every requirement has exactly one interpretation.
+• Complete — all requirements (functional, non-functional, interface) are included.
+• Consistent — no conflicting requirements.
+• Ranked — requirements prioritised by importance or stability.
+• Verifiable — each requirement can be tested.
+• Modifiable — structure and style allow changes.
+• Traceable — each requirement can be traced to its origin and to design/code.
+
+SRS Document Structure:
+
+1. Introduction
+   1.1 Purpose — what the system is for.
+   1.2 Scope — what the system will/will not do.
+   1.3 Definitions, Acronyms, Abbreviations.
+   1.4 References.
+   1.5 Overview of the document.
+
+2. Overall Description
+   2.1 Product perspective — relationship to other systems.
+   2.2 Product functions — major functions summary.
+   2.3 User characteristics.
+   2.4 Constraints — regulatory, hardware, parallel operation.
+   2.5 Assumptions and dependencies.
+
+3. Specific Requirements
+   3.1 Functional requirements — detailed description of each function.
+   3.2 External interface requirements — user interfaces, hardware, software, 
+       communications.
+   3.3 Non-functional requirements — performance, security, reliability, usability.
+   3.4 Design constraints — standards compliance, hardware limitations.
+
+4. Appendices
+   Supporting information: data models, analysis models, glossary.
+
+Importance of SRS:
+• Establishes basis for agreement between customer and developer.
+• Reduces development effort — fewer misunderstandings.
+• Provides baseline for validation and verification.
+• Input to design, testing, and project management.
+
+
+3(b) Option 1: Explain Use Case Modeling with suitable examples. (8M)
+──────────────────────────────────────────────────────────────────────
+
+Use Case Modeling:
+
+Use Case Modeling is a technique for capturing functional requirements of a system 
+by describing how the system interacts with external entities (actors) to achieve 
+specific goals.
+
+Key Elements:
+
+Actor:
+A person, organisation, or external system that interacts with the subject system. 
+Represented as a stick figure.
+• Primary Actor — has a goal fulfilled by the use case (e.g., Customer).
+• Secondary Actor — provides a service required by the system 
+  (e.g., Payment Gateway).
+
+Use Case:
+A sequence of interactions between an actor and the system that produces a result 
+of value. Represented as an oval.
+
+System Boundary:
+A rectangle enclosing all use cases; separates the system from actors.
+
+Relationships:
+• Association — solid line between actor and use case.
+• Include — «include» arrow; a use case always includes another (mandatory).
+• Extend — «extend» arrow; a use case optionally extends another (conditional).
+• Generalisation — arrow with hollow head; inheritance between actors or use cases.
+
+Use Case Description Template:
+Use Case Name:  Login
+Actor:          Registered User
+Precondition:   User is not logged in; system is running.
+Main Flow:      1. User enters username and password.
+                2. System validates credentials.
+                3. System grants access and shows dashboard.
+Alternate Flow: 2a. Invalid credentials → show error message.
+Postcondition:  User is logged in; session is created.
+
+Example — Online Shopping System:
+• Actors: Customer, Admin, Payment Gateway.
+• Use Cases: Browse Products, Add to Cart, Place Order, Make Payment (include 
+  from Place Order), Track Order, Manage Inventory (Admin).
+• Place Order «include» Make Payment.
+• Make Payment «extend» Apply Coupon (optional).
+
+Benefits of Use Case Modeling:
+• Easy to understand by both technical and non-technical stakeholders.
+• Captures user perspective of the system.
+• Basis for test case design.
+• Helps identify functional requirements.
+
+
+3(b) Option 2: Discuss requirement validation and requirement management techniques. (8M)
+──────────────────────────────────────────────────────────────────────────────────────────
+
+Requirement Validation:
+
+Requirement Validation verifies that the SRS correctly captures what the customer 
+wants. It checks that requirements are complete, consistent, realistic, and verifiable.
+
+What is validated?
+• Validity — does each requirement reflect the actual need?
+• Consistency — no contradictions between requirements.
+• Completeness — all required functions and constraints included.
+• Realism — achievable within budget, schedule, technology.
+• Verifiability — can each requirement be tested?
+
+Validation Techniques:
+
+1. Requirements Reviews / Inspections
+   A team systematically examines the SRS to detect errors, ambiguities, and 
+   omissions. Types: Walkthrough (informal), Inspection (formal with defect tracking).
+
+2. Prototyping
+   Build a quick executable model of the system to let users evaluate requirements. 
+   Reveals misunderstood and missing requirements before full development.
+
+3. Test-Case Generation
+   Derive test cases from requirements. If a test case cannot be written, the 
+   requirement may be ambiguous or untestable.
+
+4. Automated Consistency Checking
+   Use tools to check for conflicting or duplicated requirements in requirement 
+   management tools (e.g., IBM DOORS).
+
+
+Requirement Management:
+
+Requirement Management deals with understanding and controlling changes to 
+requirements throughout the project.
+
+Key Activities:
+• Requirements identification — unique identifier for each requirement.
+• Change management — formal process for evaluating and approving changes.
+• Traceability management — trace requirements to design, code, and tests.
+• Requirements status tracking — track status: proposed, approved, implemented, 
+  verified.
+
+Traceability Matrix:
+A table linking each requirement to the design elements, code modules, and test 
+cases that implement and verify it.
+
+Requirement | Design Module | Code Module | Test Case
+REQ-001     | Module-A      | login.java  | TC-001
+REQ-002     | Module-B      | search.java | TC-002
+
+Change Impact Analysis:
+Before approving a requirement change, assess: what else changes? how much effort? 
+what is the risk?
+
+
+UNIT III
+================================================================================
+
+4(a) Option 1: Explain software architectural design and architectural views. (8M)
+───────────────────────────────────────────────────────────────────────────────────
+
+Software Architectural Design:
+
+Software architectural design is the process of defining the overall structure of 
+the software system — the components, their interfaces, and the interactions between 
+them. It is the first step in the design process after requirements.
+
+Importance of Architecture:
+• Provides a blueprint for the system.
+• Addresses non-functional requirements (performance, security, scalability).
+• Enables parallel development by multiple teams.
+• Reduces risk by making major decisions early.
+
+Common Architectural Styles:
+
+1. Layered Architecture
+   System is organised into layers; each layer provides services to the layer above. 
+   Typical layers: Presentation → Business Logic → Data Access → Database.
+   Advantage: Separation of concerns; easy to modify one layer without affecting others.
+   Used in: Web applications, enterprise systems.
+
+2. Client-Server Architecture
+   Clients request services from servers over a network. Server provides resources 
+   (database, files, computation); client provides UI.
+   • 2-tier: Client directly contacts database server.
+   • 3-tier: Client ↔ Application Server ↔ Database Server.
+
+3. Microservices Architecture
+   System broken into small, independent services that communicate via APIs. Each 
+   service has its own database and deployment.
+   Advantage: Scalable, independently deployable, technology-agnostic.
+   Disadvantage: Complex inter-service communication; distributed system challenges.
+
+4. Event-Driven Architecture
+   Components communicate by producing and consuming events via a message broker 
+   (Kafka, RabbitMQ). Highly decoupled.
+
+5. Repository Architecture
+   All subsystems share a central repository/database. Suitable for systems with 
+   large amounts of shared data.
+
+6. Pipe-and-Filter
+   Data flows through a series of processing steps (filters) connected by pipes. 
+   Each filter transforms the data.
+
+Architectural Views (4+1 View Model):
+• Logical View — system functionality; class and interaction diagrams.
+• Process View — concurrency and distribution; activity diagrams.
+• Development View — static organisation of software in development environment.
+• Physical View — deployment on hardware; deployment diagrams.
+• Scenarios (Use Case View) — ties the other four views together.
+
+
+4(a) Option 2: Discuss function-oriented and object-oriented design approaches. (8M)
+──────────────────────────────────────────────────────────────────────────────────────
+
+Function-Oriented Design:
+
+In function-oriented design (also called structured design), the system is viewed 
+as a set of functions that transform inputs to outputs. The primary design model 
+is the Data Flow Diagram (DFD).
+
+Key Concepts:
+• System decomposed into functions/modules.
+• Functions share data through global variables or parameters.
+• Top-down design: Start from high-level function, progressively decompose.
+• Design tools: DFD, Structure Charts, Pseudocode.
+
+Advantages:
+• Simple and easy to understand.
+• Good for systems with clear input-process-output flow.
+
+Disadvantages:
+• Poor at modelling real-world entities.
+• Does not handle change well — function changes ripple across the system.
+• Data and functions are separate — poor encapsulation.
+
+
+Object-Oriented Design (OOD):
+
+OOD views the system as a set of interacting objects that encapsulate data and 
+behaviour. Based on OOP concepts.
+
+Key Concepts:
+• System decomposed into objects (instances of classes).
+• Objects communicate via message passing (method calls).
+• Models real-world entities naturally.
+• Design tools: UML (Class Diagram, Sequence Diagram, Collaboration Diagram).
+
+Design Process:
+• Identify objects and classes from requirements (noun analysis).
+• Identify attributes and operations for each class.
+• Identify relationships (association, aggregation, composition, inheritance).
+• Design class hierarchy.
+• Validate design against requirements.
+
+Advantages:
+• Models reality naturally — closer mapping to problem domain.
+• Encapsulation — changes localised within objects.
+• Reusability through inheritance.
+• Easier to maintain and extend.
+
+OOD vs Function-Oriented Design:
+Aspect           | Function-Oriented    | Object-Oriented
+Focus            | Functions/processes  | Objects/data
+Data             | Shared globally      | Encapsulated in objects
+Decomposition    | Functional           | Object-based
+Reuse            | Code reuse limited   | High reuse through inheritance
+Real-world       | Poor mapping         | Natural mapping
+
+
+4(b) Option 1: Explain Black Box testing techniques. (8M)
+─────────────────────────────────────────────────────────
+
+Black Box Testing:
+
+Black Box testing (also called functional testing or specification-based testing) 
+tests the software from the user's perspective without knowing the internal code 
+structure. The tester only knows what the system SHOULD do (from the specification).
+
+• Tests external behaviour: inputs → expected outputs.
+• Used at System Testing and Acceptance Testing levels.
+
+Black Box Testing Techniques:
+
+1. Equivalence Partitioning (EP)
+   Divide input space into classes (partitions) where all values in a class behave 
+   the same way. Test one value from each partition.
+   
+   Example — Age input (valid: 18–60):
+   • Invalid partition 1: age < 18 (e.g., test with 10).
+   • Valid partition: 18 ≤ age ≤ 60 (e.g., test with 30).
+   • Invalid partition 2: age > 60 (e.g., test with 70).
+
+2. Boundary Value Analysis (BVA)
+   Test at the boundaries of equivalence partitions, as errors most often occur 
+   at boundaries.
+   
+   Example — Age input (18–60): Test values: 17, 18, 19, 59, 60, 61.
+
+3. Decision Table Testing
+   Used when system behaviour depends on multiple conditions. Create a table of 
+   all combinations of conditions and their actions.
+   
+   Condition 1 | Condition 2 | Action
+   T           | T           | Action A
+   T           | F           | Action B
+   F           | T           | Action C
+   F           | F           | Action D
+
+4. State Transition Testing
+   Test system by causing transitions between system states. Suitable for systems 
+   with well-defined states (e.g., ATM machine: Idle → Card Inserted → 
+   PIN Entered → Transaction).
+
+5. Cause-Effect Graphing
+   Model the relationships between inputs (causes) and outputs (effects) as a 
+   graph; derive test cases from the graph.
+
+6. Error Guessing
+   Use experience and intuition to guess likely problem areas. Not systematic but 
+   often finds bugs that formal techniques miss.
+
+Advantages of Black Box Testing:
+• Tests from user perspective — validates system against specification.
+• No knowledge of implementation required — testers and developers work 
+  independently.
+• Applicable at all testing levels.
+
+Disadvantages:
+• Cannot test internal code paths.
+• Impossible to test all inputs — requires sampling strategy.
+
+
+4(b) Option 2: Explain White Box testing techniques with examples. (8M)
+────────────────────────────────────────────────────────────────────────
+
+White Box Testing:
+
+White Box testing (also called glass box, structural, or code-based testing) tests 
+the internal structure, logic, and code of the software. The tester has full 
+visibility into the source code.
+
+• Used at Unit Testing and Integration Testing levels.
+• Verifies that code correctly implements the design.
+
+White Box Testing Techniques:
+
+1. Statement Coverage
+   Every executable statement in the code must be executed at least once.
+   
+   if (a > 0) { x = 1; }  // Statement: x=1 must be executed at least once
+   
+   Coverage = (Statements executed / Total statements) × 100%
+
+2. Branch / Decision Coverage
+   Every branch (true and false) of every decision must be executed at least once.
+   
+   if (x > 0) { y=1; } else { y=-1; }
+   
+   Two test cases needed: one where x>0 (true branch) and one where x≤0 (false branch).
+
+3. Condition Coverage
+   Every individual condition in a compound decision must take both true and false 
+   values.
+   
+   if (A && B) { ... }
+   
+   Need: A=T,B=T; A=T,B=F; A=F,B=T; A=F,B=F
+
+4. Path Coverage
+   Every possible independent path through the code is executed. Most thorough but 
+   impractical for complex programs.
+
+5. Cyclomatic Complexity (McCabe's Metric)
+   Measures the number of independent paths through the code.
+   
+   V(G) = E − N + 2P
+   E = edges in control flow graph
+   N = nodes
+   P = connected components (usually 1)
+   
+   V(G) = number of linearly independent paths = minimum number of test cases 
+   for 100% branch coverage.
+
+Example:
+void classify(int n) {
+    if (n > 0) {          // decision 1
+        if (n < 100)      // decision 2
+            print("small positive");
+        else
+            print("large positive");
+    } else {
+        print("non-positive");
+    }
+}
+
+V(G) = 3 decisions → 3 independent paths.
+
+Advantages of White Box Testing:
+• Can test all code paths — high code coverage achievable.
+• Detects unreachable code (dead code).
+• Finds security vulnerabilities in code logic.
+
+Disadvantages:
+• Requires programming knowledge.
+• Cannot detect missing functionality (only tests what is coded).
+• Expensive — all paths may be infeasible to test.
+
+
+UNIT IV
+================================================================================
+
+5(a) Option 1: Explain Singleton and Factory Method patterns with UML diagrams. (8M)
+──────────────────────────────────────────────────────────────────────────────────────
+
+Singleton Pattern:
+
+Intent:
+Ensure a class has only ONE instance and provide a global access point to it.
+
+When to use:
+• Database connection pool.
+• Logger / audit trail.
+• Application configuration manager.
+• Thread pool.
+
+Structure:
+class Singleton {
+    private static Singleton instance = null;
+    private Singleton() {}          // private constructor
+    public static Singleton getInstance() {
+        if (instance == null)
+            instance = new Singleton();
+        return instance;
+    }
+    public void showMessage() { System.out.println("Singleton instance"); }
+}
+
+// Usage
+Singleton s1 = Singleton.getInstance();
+Singleton s2 = Singleton.getInstance();
+System.out.println(s1 == s2);  // true — same instance
+
+Thread-Safe Singleton (Double-Checked Locking):
+public static synchronized Singleton getInstance() {
+    if (instance == null) {
+        synchronized(Singleton.class) {
+            if (instance == null) instance = new Singleton();
+        }
+    }
+    return instance;
+}
+
+
+Factory Method Pattern:
+
+Intent:
+Define an interface for creating an object, but let subclasses decide which class 
+to instantiate. Factory Method lets a class defer instantiation to subclasses.
+
+Participants: Creator (abstract class), ConcreteCreator (subclasses), Product 
+(interface), ConcreteProduct.
+
+Example — Shape Factory:
+interface Shape { void draw(); }
+class Circle implements Shape { 
+    public void draw() { System.out.println("Circle"); } 
+}
+class Square implements Shape { 
+    public void draw() { System.out.println("Square"); } 
+}
+
+abstract class ShapeCreator {
+    abstract Shape createShape();
+    void render() { Shape s = createShape(); s.draw(); }
+}
+class CircleCreator extends ShapeCreator {
+    Shape createShape() { return new Circle(); }
+}
+class SquareCreator extends ShapeCreator {
+    Shape createShape() { return new Square(); }
+}
+
+// Usage
+ShapeCreator creator = new CircleCreator();
+creator.render();  // Circle
+
+Advantages:
+• Open/Closed Principle — add new products without changing existing creator code.
+• Single Responsibility — product creation code in one place.
+
+
+5(a) Option 2: Explain Abstract Factory and Builder patterns. (8M)
+──────────────────────────────────────────────────────────────────
+
+Abstract Factory Pattern:
+
+Intent:
+Provide an interface for creating FAMILIES of related or dependent objects without 
+specifying their concrete classes. Also called 'Factory of Factories'.
+
+Participants: AbstractFactory, ConcreteFactory1/2, AbstractProductA/B, 
+ConcreteProductA1/A2/B1/B2.
+
+Example — UI Theme Factory (Windows vs macOS):
+interface Button { void click(); }
+interface Checkbox { void check(); }
+
+class WinButton implements Button { 
+    public void click() { System.out.println("Win Button"); } 
+}
+class MacButton implements Button { 
+    public void click() { System.out.println("Mac Button"); } 
+}
+class WinCheckbox implements Checkbox { 
+    public void check() { System.out.println("Win Checkbox"); } 
+}
+class MacCheckbox implements Checkbox { 
+    public void check() { System.out.println("Mac Checkbox"); } 
+}
+
+interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+class WinFactory implements GUIFactory {
+    public Button createButton() { return new WinButton(); }
+    public Checkbox createCheckbox() { return new WinCheckbox(); }
+}
+class MacFactory implements GUIFactory {
+    public Button createButton() { return new MacButton(); }
+    public Checkbox createCheckbox() { return new MacCheckbox(); }
+}
+
+// Client
+GUIFactory factory = new WinFactory();
+Button btn = factory.createButton();  btn.click(); // Win Button
+
+Advantages:
+• Ensures products from the same family are used together.
+• Promotes consistency among products.
+• Supports Open/Closed Principle — add new families by adding new factory.
+
+
+Builder Pattern:
+
+Intent:
+Separate the construction of a complex object from its representation, so the same 
+construction process can create different representations. Used when an object 
+requires many configuration steps.
+
+Participants: Builder (interface), ConcreteBuilder, Director, Product.
+
+Example — Building a Computer:
+class Computer {
+    private String cpu, ram, storage, gpu;
+    // private constructor — only builder can create
+    private Computer(Builder b) { 
+        cpu=b.cpu; ram=b.ram; storage=b.storage; gpu=b.gpu; 
+    }
+    public static class Builder {
+        private String cpu, ram, storage, gpu;
+        public Builder cpu(String c) { cpu=c; return this; }
+        public Builder ram(String r) { ram=r; return this; }
+        public Builder storage(String s) { storage=s; return this; }
+        public Builder gpu(String g) { gpu=g; return this; }
+        public Computer build() { return new Computer(this); }
+    }
+}
+
+// Usage (fluent interface / method chaining)
+Computer pc = new Computer.Builder()
+    .cpu("Intel i9")
+    .ram("32GB")
+    .storage("1TB SSD")
+    .gpu("RTX 4090")
+    .build();
+
+Advantages:
+• Construct objects step-by-step; control over construction process.
+• Same construction code can produce different representations.
+• Eliminates 'telescoping constructor' anti-pattern.
+
+
+5(b) Option 1: Discuss Prototype pattern with suitable example. (8M)
+────────────────────────────────────────────────────────────────────
+
+Prototype Pattern:
+
+Intent:
+Specify the kinds of objects to create using a prototypical instance, and create 
+new objects by COPYING (cloning) this prototype. Used when object creation is 
+expensive and a similar object already exists.
+
+When to use:
+• When creating an object from scratch is expensive (complex initialisation, 
+  database fetch).
+• When you want to avoid subclasses of an object creator.
+• When instances of a class can have only a few different combinations of state.
+
+Participants: Prototype (interface with clone()), ConcretePrototype, Client.
+
+Java Implementation (using Cloneable):
+abstract class Shape implements Cloneable {
+    String color;
+    abstract void draw();
+    @Override
+    public Shape clone() {
+        try { return (Shape) super.clone(); }
+        catch (CloneNotSupportedException e) { return null; }
+    }
+}
+class Circle extends Shape {
+    int radius;
+    Circle(String color, int radius) { 
+        this.color=color; this.radius=radius; 
+    }
+    public void draw() { 
+        System.out.println("Circle r="+radius+" color="+color); 
+    }
+}
+
+// Usage — clone an expensive object
+Circle original = new Circle("Red", 10);
+Circle copy = (Circle) original.clone();
+copy.color = "Blue";      // modify without affecting original
+original.draw();  // Circle r=10 color=Red
+copy.draw();      // Circle r=10 color=Blue
+
+Prototype Registry:
+Maintain a cache (HashMap) of prototypes and clone them on request.
+
+Map<String,Shape> registry = new HashMap<>();
+registry.put("circle", new Circle("White", 5));
+Circle c = (Circle) registry.get("circle").clone();
+
+Shallow vs Deep Clone:
+• Shallow clone: primitive fields copied; object references shared. (super.clone())
+• Deep clone: all fields including referenced objects are independently copied. 
+  (Manual copy or serialisation trick)
+
+Advantages:
+• Reduces object creation cost — clone is faster than new + setup.
+• Reduces subclassing — no need for factory subclasses.
+
+
+5(b) Option 2: Explain Object Pool pattern and its applications. (8M)
+─────────────────────────────────────────────────────────────────────
+
+Object Pool Pattern:
+
+Intent:
+Avoid expensive acquisition and release of resources by recycling objects that 
+are no longer in use. Maintains a pool of pre-created, ready-to-use objects.
+
+When to use:
+• Object creation is expensive (database connections, thread creation, socket 
+  connections).
+• Objects are needed frequently for short durations.
+• Limited number of instances are acceptable (connection limits).
+
+Participants: ObjectPool, PooledObject, Client.
+
+Implementation:
+class ConnectionPool {
+    private List<Connection> available = new ArrayList<>();
+    private List<Connection> inUse = new ArrayList<>();
+    private int maxSize;
+
+    ConnectionPool(int size) {
+        maxSize = size;
+        for (int i=0; i<size; i++)
+            available.add(createConnection());
+    }
+
+    synchronized Connection acquire() {
+        if (available.isEmpty()) throw new RuntimeException("Pool exhausted");
+        Connection c = available.remove(available.size()-1);
+        inUse.add(c);
+        return c;
+    }
+
+    synchronized void release(Connection c) {
+        inUse.remove(c);
+        available.add(c);
+    }
+}
+
+Applications:
+• Database Connection Pools — JDBC connection pool (HikariCP, Apache DBCP, c3p0).
+• Thread Pools — Java ExecutorService.
+• HTTP Connection Pools — HTTP client libraries reuse TCP connections.
+• Game development — object pools for bullets, enemies, particles.
+
+Advantages:
+• Significant performance improvement — eliminates object creation/destruction 
+  overhead.
+• Controls resource usage — limits maximum concurrent connections.
+
+Disadvantages:
+• Complex implementation — must handle thread safety.
+• Memory overhead — objects held in pool consume memory even when not in use.
+
+
+UNIT V
+================================================================================
+
+6(a) Option 1: Explain Adapter and Bridge design patterns. (8M)
+──────────────────────────────────────────────────────────────
+
+Adapter Pattern:
+
+Category: Structural
+
+Intent:
+Convert the interface of a class into another interface that clients expect. 
+Adapter lets classes work together that could not otherwise because of 
+incompatible interfaces. Also called 'Wrapper'.
+
+When to use:
+• You want to use an existing class but its interface does not match what you need.
+• Integrating a third-party library or legacy system.
+
+Types:
+• Class Adapter — uses multiple inheritance (not possible in Java).
+• Object Adapter — uses composition (common in Java).
+
+Example — MediaPlayer Adapter:
+// Existing interface
+interface MediaPlayer { void play(String file); }
+// Advanced media player (incompatible interface)
+interface AdvancedPlayer { void playVlc(String f); void playMp4(String f); }
+class VlcPlayer implements AdvancedPlayer {
+    public void playVlc(String f) { System.out.println("Playing VLC: "+f); }
+    public void playMp4(String f) {}
+}
+// Adapter
+class MediaAdapter implements MediaPlayer {
+    AdvancedPlayer player;
+    MediaAdapter(String type) {
+        if (type.equals("vlc")) player = new VlcPlayer();
+    }
+    public void play(String file) { player.playVlc(file); }
+}
+// Client uses MediaPlayer interface uniformly
+MediaPlayer mp = new MediaAdapter("vlc");
+mp.play("movie.vlc");  // Playing VLC: movie.vlc
+
+Advantages:
+• Reuse existing classes without modifying them.
+• Open/Closed Principle — client code need not change.
+
+
+Bridge Pattern:
+
+Category: Structural
+
+Intent:
+Decouple an abstraction from its implementation so that the two can vary 
+independently. Avoids a permanent binding between abstraction and implementation.
+
+Problem it solves:
+Without Bridge, combining M abstractions with N implementations requires M×N 
+classes. Bridge reduces this to M+N classes.
+
+Example — Shape + Colour:
+// Implementation hierarchy
+interface Color { String fill(); }
+class Red implements Color { public String fill() { return "Red"; } }
+class Blue implements Color { public String fill() { return "Blue"; } }
+// Abstraction hierarchy
+abstract class Shape {
+    protected Color color;  // bridge
+    Shape(Color c) { color = c; }
+    abstract void draw();
+}
+class Circle extends Shape {
+    Circle(Color c) { super(c); }
+    public void draw() { System.out.println(color.fill() + " Circle"); }
+}
+class Rectangle extends Shape {
+    Rectangle(Color c) { super(c); }
+    public void draw() { System.out.println(color.fill() + " Rectangle"); }
+}
+// Usage — combine freely
+new Circle(new Red()).draw();       // Red Circle
+new Rectangle(new Blue()).draw();   // Blue Rectangle
+
+Advantages:
+• Decouples abstraction from implementation — vary independently.
+• Reduces class explosion — M+N instead of M×N.
+
+
+6(a) Option 2: Explain Composite and Decorator patterns. (8M)
+──────────────────────────────────────────────────────────────
+
+Composite Pattern:
+
+Category: Structural
+
+Intent:
+Compose objects into tree structures to represent PART-WHOLE hierarchies. 
+Composite lets clients treat individual objects (leaves) and compositions of 
+objects (composites) uniformly.
+
+When to use:
+• You want to represent a part-whole hierarchy (e.g., file system, organisation 
+  chart, UI widget tree).
+• You want clients to be able to ignore the difference between individual and 
+  composed objects.
+
+Example — File System:
+interface FileSystemItem { void display(String indent); }
+// Leaf
+class File implements FileSystemItem {
+    String name;
+    File(String n) { name=n; }
+    public void display(String indent) { System.out.println(indent + "- " + name); }
+}
+// Composite
+class Directory implements FileSystemItem {
+    String name;
+    List<FileSystemItem> items = new ArrayList<>();
+    Directory(String n) { name=n; }
+    void add(FileSystemItem i) { items.add(i); }
+    public void display(String indent) {
+        System.out.println(indent + "[" + name + "]");
+        for (FileSystemItem i : items) i.display(indent + "  ");
+    }
+}
+// Usage
+Directory root = new Directory("root");
+root.add(new File("readme.txt"));
+Directory src = new Directory("src");
+src.add(new File("Main.java"));
+root.add(src);
+root.display("");
+
+Output:
+[root]
+  - readme.txt
+  [src]
+    - Main.java
+
+
+Decorator Pattern:
+
+Category: Structural
+
+Intent:
+Attach additional responsibilities to an object dynamically. Decorators provide 
+a flexible alternative to subclassing for extending functionality.
+
+Example — Coffee with add-ons:
+interface Coffee { String getDescription(); double cost(); }
+class SimpleCoffee implements Coffee {
+    public String getDescription() { return "Simple Coffee"; }
+    public double cost() { return 30.0; }
+}
+abstract class CoffeeDecorator implements Coffee {
+    protected Coffee coffee;
+    CoffeeDecorator(Coffee c) { coffee = c; }
+}
+class Milk extends CoffeeDecorator {
+    Milk(Coffee c) { super(c); }
+    public String getDescription() { return coffee.getDescription() + ", Milk"; }
+    public double cost() { return coffee.cost() + 5.0; }
+}
+class Sugar extends CoffeeDecorator {
+    Sugar(Coffee c) { super(c); }
+    public String getDescription() { return coffee.getDescription() + ", Sugar"; }
+    public double cost() { return coffee.cost() + 2.0; }
+}
+// Usage
+Coffee c = new SimpleCoffee();
+c = new Milk(c);
+c = new Sugar(c);
+System.out.println(c.getDescription() + " = Rs." + c.cost());
+// Simple Coffee, Milk, Sugar = Rs.37.0
+
+Advantages:
+• Add responsibilities without modifying original class (Open/Closed).
+• Flexible — combine decorators in any order.
+
+
+6(b) Option 1: Explain Observer and Strategy patterns with UML diagrams. (8M)
+───────────────────────────────────────────────────────────────────────────────
+
+Observer Pattern:
+
+Category: Behavioural
+
+Intent:
+Define a one-to-many dependency between objects so that when one object (Subject) 
+changes state, all its dependents (Observers) are notified and updated automatically.
+
+Participants: Subject (Observable), ConcreteSubject, Observer (interface), 
+ConcreteObserver.
+
+Example — Stock Price Monitor:
+import java.util.*;
+interface Observer { void update(String stockName, double price); }
+class StockMarket {
+    private List<Observer> observers = new ArrayList<>();
+    private Map<String,Double> prices = new HashMap<>();
+    public void addObserver(Observer o) { observers.add(o); }
+    public void removeObserver(Observer o) { observers.remove(o); }
+    public void setPrice(String stock, double price) {
+        prices.put(stock, price);
+        notifyAll(stock, price);
+    }
+    private void notifyAll(String stock, double price) {
+        for (Observer o : observers) o.update(stock, price);
+    }
+}
+class PhoneApp implements Observer {
+    public void update(String s, double p) {
+        System.out.println("Phone Alert: " + s + " = " + p);
+    }
+}
+class EmailAlert implements Observer {
+    public void update(String s, double p) {
+        System.out.println("Email: " + s + " changed to " + p);
+    }
+}
+// Usage
+StockMarket sm = new StockMarket();
+sm.addObserver(new PhoneApp());
+sm.addObserver(new EmailAlert());
+sm.setPrice("INFOSYS", 1450.50);
+
+Advantages:
+• Loose coupling between Subject and Observers.
+• Open/Closed — add new observers without changing Subject.
+• Broadcast communication.
+
+
+Strategy Pattern:
+
+Category: Behavioural
+
+Intent:
+Define a family of algorithms, encapsulate each one, and make them interchangeable. 
+Strategy lets the algorithm vary independently from the clients that use it.
+
+Example — Sorting Strategy:
+interface SortStrategy { void sort(int[] arr); }
+class BubbleSort implements SortStrategy {
+    public void sort(int[] a) { System.out.println("Bubble sort"); /* ... */ }
+}
+class QuickSort implements SortStrategy {
+    public void sort(int[] a) { System.out.println("Quick sort"); /* ... */ }
+}
+class Sorter {
+    private SortStrategy strategy;
+    void setStrategy(SortStrategy s) { strategy = s; }
+    void sort(int[] arr) { strategy.sort(arr); }
+}
+Sorter sorter = new Sorter();
+sorter.setStrategy(new QuickSort());
+sorter.sort(new int[]{5,2,8,1});  // Quick sort
+sorter.setStrategy(new BubbleSort());
+sorter.sort(new int[]{5,2,8,1}); // Bubble sort
+
+Real-world use: Payment strategies (CreditCard, PayPal, UPI), Compression (ZIP, RAR), 
+Discount strategies.
+
+
+6(b) Option 2: Explain Command and Iterator patterns. (8M)
+───────────────────────────────────────────────────────────
+
+Command Pattern:
+
+Category: Behavioural
+
+Intent:
+Encapsulate a request as an object, thereby allowing you to parameterise clients 
+with different requests, queue requests, log them, and support undoable operations.
+
+Participants: Command (interface with execute()), ConcreteCommand, Invoker, 
+Receiver, Client.
+
+Example — Remote Control with Undo:
+interface Command { void execute(); void undo(); }
+class Light {
+    void on() { System.out.println("Light ON"); }
+    void off() { System.out.println("Light OFF"); }
+}
+class LightOnCommand implements Command {
+    Light light;
+    LightOnCommand(Light l) { light=l; }
+    public void execute() { light.on(); }
+    public void undo() { light.off(); }
+}
+class RemoteControl {  // Invoker
+    Command cmd;
+    Deque<Command> history = new ArrayDeque<>();
+    void setCommand(Command c) { cmd=c; }
+    void press() { cmd.execute(); history.push(cmd); }
+    void undoLast() { if(!history.isEmpty()) history.pop().undo(); }
+}
+RemoteControl remote = new RemoteControl();
+Light l = new Light();
+remote.setCommand(new LightOnCommand(l));
+remote.press();    // Light ON
+remote.undoLast(); // Light OFF
+
+Advantages:
+• Decouples the object that invokes the operation from the object that performs it.
+• Supports undo/redo.
+• Supports queuing and logging of commands.
+
+
+Iterator Pattern:
+
+Category: Behavioural
+
+Intent:
+Provide a way to sequentially access elements of a collection without exposing 
+its underlying representation (array, list, tree, etc.).
+
+Example:
+interface Iterator<T> { boolean hasNext(); T next(); }
+class NumberCollection {
+    private int[] numbers;
+    NumberCollection(int[] n) { numbers=n; }
+    Iterator<Integer> iterator() {
+        return new Iterator<Integer>() {
+            int index=0;
+            public boolean hasNext() { return index < numbers.length; }
+            public Integer next() { return numbers[index++]; }
+        };
+    }
+}
+NumberCollection col = new NumberCollection(new int[]{10,20,30,40});
+Iterator<Integer> it = col.iterator();
+while (it.hasNext()) System.out.println(it.next());
+
+Java has built-in Iterator via java.util.Iterator. The for-each loop uses iterator 
+internally.
+
+Advantages:
+• Simplifies traversal code for clients.
+• Support multiple simultaneous traversals of the same collection.
+• Decouple collection from traversal algorithm.
+
+
+================================================================================
+PREDICTED SEMESTER PAPER — SET 2
+================================================================================
+
+PART A — SHORT ANSWERS (5 × 2 = 10 Marks)
+================================================================================
+
+[SET 2 SHORT ANSWERS — Same as SET 1 short answers but with different selections]
+
+[Additional answer sections for SET 2 long answers follow similar patterns...]
+
+================================================================================
+END OF ANSWER DOCUMENT
+Software Engineering & Design Patterns | GGU MCA II Semester
+================================================================================

@@ -6,6 +6,7 @@ import com.idp.backend.dto.MetricRequest;
 import com.idp.backend.dto.MetricResponse;
 import com.idp.backend.dto.SummaryResponse;
 import com.idp.backend.service.MetricService;
+import com.idp.backend.util.PrometheusClient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,9 @@ public class MetricController {
 
     @Autowired
     public MetricService service;
+
+    @Autowired
+    public PrometheusClient prometheusClient;
 
     @PostMapping("/ingest/{serviceId}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -59,5 +63,37 @@ public class MetricController {
     public ResponseEntity<SummaryResponse> summarize(@PathVariable UUID serviceId, @RequestParam(required = false) Integer window,
                                                      @RequestParam(required = false)Instant from, @RequestParam(required = false) Instant to){
             return ResponseEntity.ok(service.getSummaryById(serviceId, window, from, to));
+    }
+
+    /**
+     * Sync metrics from Prometheus for a specific service
+     * Pulls current metrics from Prometheus and ingests them into the system
+     */
+    @PostMapping("/prometheus/sync/{serviceId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> syncFromPrometheus(@PathVariable UUID serviceId, @RequestParam String serviceName){
+        service.syncFromPrometheus(serviceId, serviceName);
+        return ResponseEntity.accepted().build();
+    }
+
+    /**
+     * Pull all services metrics from Prometheus
+     * Bulk operation to sync metrics for all registered services
+     */
+    @PostMapping("/prometheus/pull-all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> pullAllFromPrometheus(){
+        service.pullAllMetricsFromPrometheus();
+        return ResponseEntity.accepted().build();
+    }
+
+    /**
+     * Get raw Prometheus metrics query result
+     * For advanced queries and debugging
+     */
+    @GetMapping("/prometheus/query")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> queryPrometheus(@RequestParam String query){
+        return ResponseEntity.ok(prometheusClient.query(query));
     }
 }

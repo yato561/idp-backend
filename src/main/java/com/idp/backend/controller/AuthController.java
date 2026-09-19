@@ -16,6 +16,8 @@ import com.idp.backend.dto.RefreshRequest;
 import com.idp.backend.dto.RegisterRequest;
 import com.idp.backend.service.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -40,7 +42,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(
-            @RequestBody RefreshRequest request
+            @Valid @RequestBody RefreshRequest request
             ){
         return ResponseEntity.ok(
                authService.refresh(request)

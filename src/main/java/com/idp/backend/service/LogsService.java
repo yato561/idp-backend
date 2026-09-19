@@ -12,5 +12,6 @@ import java.util.UUID;
 public interface LogsService {
 
     void saveLog(LogRequest request, UUID serviceId);
+    void ingestInternal(LogRequest request);
     Page<LogResponse> getLog(UUID serviceId, Instant from, Instant to, String level, Pageable page);
 }
